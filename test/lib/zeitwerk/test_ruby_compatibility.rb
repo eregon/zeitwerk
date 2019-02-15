@@ -119,7 +119,7 @@ class TestRubyCompatibility < LoaderTest
   end
 
   test "an autoload on yourself is ignored" do
-    files = [["foo.rb", <<-EOS]]
+    files = [["foo1.rb", <<-EOS]]
       Object.autoload(:Foo1, __FILE__)
       $trc_inception = !Object.autoload?(:Foo1)
       Foo1 = 1
@@ -130,7 +130,7 @@ class TestRubyCompatibility < LoaderTest
 
       with_load_path do
         $trc_inception = false
-        require "foo"
+        require "foo1"
       end
 
       assert $trc_inception
@@ -139,13 +139,13 @@ class TestRubyCompatibility < LoaderTest
 
   test "an autoload on a file being required at some point up in the call chain is also ignored" do
     files = [
-      ["foo.rb", <<-EOS],
+      ["foo22.rb", <<-EOS],
         require 'bar'
         Foo22 = 1
       EOS
      ["bar.rb", <<-EOS]
        Bar = true
-       Object.autoload(:Foo22, p(File.realpath('foo.rb')))
+       Object.autoload(:Foo22, p(File.realpath('foo22.rb')))
        $trc_inception = !p(Object.autoload?(:Foo22))
      EOS
     ]
@@ -156,7 +156,7 @@ class TestRubyCompatibility < LoaderTest
       with_load_path do
         $trc_inception = false
         p Dir.pwd
-        require "foo"
+        require "foo22"
       end
 
       assert $trc_inception
