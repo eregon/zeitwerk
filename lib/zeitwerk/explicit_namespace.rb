@@ -37,7 +37,7 @@ module Zeitwerk
         if Object.equal?(mod)
           @loaders.delete(cname)
         else
-          @loaders.delete("#{real_mod_name(mod)}::#{cname}")
+          @loaders.delete("#{real_mod_name_with_workaround(mod)}::#{cname}")
         end
       end
 

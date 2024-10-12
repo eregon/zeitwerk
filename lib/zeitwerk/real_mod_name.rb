@@ -15,13 +15,25 @@ module Zeitwerk::RealModName
       name = UNBOUND_METHOD_MODULE_NAME.bind_call(mod)
       # https://github.com/oracle/truffleruby/issues/3683
       if name && name.start_with?('Object::')
-        name = name[8..-1]
+        p name
+        puts caller, nil
       end
       name
+    end
+
+    def real_mod_name_with_workaround(mod)
+      n = mod.name
+      if n && n.start_with?('Object::')
+        return n[8..-1]
+      end
+
+      real_mod_name(mod)
     end
   else
     def real_mod_name(mod)
       UNBOUND_METHOD_MODULE_NAME.bind_call(mod)
     end
+
+    alias_method :real_mod_name_with_workaround, :real_mod_name
   end
 end

@@ -31,7 +31,7 @@ class Zeitwerk::Cref
 
   # @sig () -> String
   def path
-    @path ||= Object.equal?(@mod) ? @cname.name : "#{real_mod_name(@mod)}::#{@cname.name}".freeze
+    @path ||= Object.equal?(@mod) ? @cname.name : "#{real_mod_name_with_workaround(@mod)}::#{@cname.name}".freeze
   end
 
   # @sig () -> String?
