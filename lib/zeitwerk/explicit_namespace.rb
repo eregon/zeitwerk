@@ -32,7 +32,7 @@ module Zeitwerk
         end
       end
 
-      # @sig (String) -> Zeitwerk::Loader?
+      # @sig (Module, Symbol) -> Zeitwerk::Loader?
       internal def loader_for(mod, cname)
         if Object.equal?(mod)
           @loaders.delete(cname)
