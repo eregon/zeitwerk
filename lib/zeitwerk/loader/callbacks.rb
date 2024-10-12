@@ -79,7 +79,8 @@ module Zeitwerk::Loader::Callbacks
   # @private
   # @sig (Module) -> void
   def on_namespace_loaded(namespace)
-    if dirs = namespace_dirs.delete(real_mod_name(namespace))
+    name = real_mod_name_with_workaround(namespace)
+    if dirs = namespace_dirs.delete(name)
       dirs.each do |dir|
         define_autoloads_for_dir(dir, namespace)
       end
@@ -87,6 +88,15 @@ module Zeitwerk::Loader::Callbacks
   end
 
   private
+
+  def real_mod_name_with_workaround(mod)
+    n = mod.name
+    if n && n.start_with?('Object::')
+      return n[8..-1]
+    end
+
+    real_mod_name(mod)
+  end
 
   # @sig (String, Object) -> void
   def run_on_load_callbacks(cpath, value, abspath)

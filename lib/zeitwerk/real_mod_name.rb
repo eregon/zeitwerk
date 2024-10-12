@@ -15,7 +15,8 @@ module Zeitwerk::RealModName
       name = UNBOUND_METHOD_MODULE_NAME.bind_call(mod)
       # https://github.com/oracle/truffleruby/issues/3683
       if name && name.start_with?('Object::')
-        name = name[8..-1]
+        p name
+        puts caller, nil
       end
       name
     end
